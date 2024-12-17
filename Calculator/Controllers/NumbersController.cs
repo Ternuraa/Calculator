@@ -22,18 +22,19 @@ namespace NumbersAPI.Controllers
             return Ok(_context.Numbers.ToList());
         }
 
-        // GET: /numbers/{id}
-        [HttpGet("{id}")]
-        public IActionResult GetNumberById(int id)
+        // GET: /numbers/id /api/products/123
+        [HttpGet("{id}")] //{} From
+        public IActionResult GetNumberById([FromRoute] string id) //получает значение из строки запроса
         {
             var number = _context.Numbers.Find(id);
             if (number == null) return NotFound();
             return Ok(number);
         }
 
-        // POST: /numbers/add
-        [HttpPost("add")]
+        // POST: /numbers/addition
+        [HttpPost("addition")]
         public IActionResult Add([FromBody] OperationRequest request)
+        //без FromBody метод Add не смог бы связать параметр request с данными в запроса
         {
             var result = request.LeftOperand + request.RightOperand;
             var record = new NumberRecord { Number = result };
@@ -42,8 +43,8 @@ namespace NumbersAPI.Controllers
             return Ok(new { id = record.Id, result });
         }
 
-        // POST: /numbers/sub
-        [HttpPost("sub")]
+        // POST: /numbers/subtraction
+        [HttpPost("subtraction")]
         public IActionResult Subtract([FromBody] OperationRequest request)
         {
             var result = request.LeftOperand - request.RightOperand;
@@ -53,8 +54,8 @@ namespace NumbersAPI.Controllers
             return Ok(new { id = record.Id, result });
         }
 
-        // POST: /numbers/mul
-        [HttpPost("mul")]
+        // POST: /numbers/multiplication
+        [HttpPost("multiplication")]
         public IActionResult Multiply([FromBody] OperationRequest request)
         {
             var result = request.LeftOperand * request.RightOperand;
@@ -64,8 +65,8 @@ namespace NumbersAPI.Controllers
             return Ok(new { id = record.Id, result });
         }
 
-        // POST: /numbers/div
-        [HttpPost("div")]
+        // POST: /numbers/division
+        [HttpPost("division")]
         public IActionResult Divide([FromBody] OperationRequest request)
         {
             if (request.RightOperand == 0) return BadRequest("Division by zero is not allowed.");

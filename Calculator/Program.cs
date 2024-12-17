@@ -5,15 +5,18 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(); //зарегистрировать контролеры, сервисы (регистрирует что есть обработчики)
+//Включиет необходимые сервисы для работы контроллеров
 
 // Add connection to database
 builder.Services.AddDbContext<NumbersDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+//настраивает подключение к базе данных SQLite с помощью строки подключения, хранящейся в конфигурации приложения.
+
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddEndpointsApiExplorer(); //: включает обозреватель API, который представляет собой службу, которая предоставляет метаданные о HTTP-API.
+builder.Services.AddSwaggerGen(); // добавляет услуги генерации Swagger к проекту.
 
 var app = builder.Build();
 
@@ -31,10 +34,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection(); 
 
-app.UseAuthorization();
+//app.UseAuthorization();
 
-app.MapControllers();
-
+app.MapControllers(); // настраивает связь между контролерам и тем маршрутом который для него задан
+// добавляет маршрутизацию к ранее зарегистрированным контроллерам. Марш связанным с URL
 app.Run();
